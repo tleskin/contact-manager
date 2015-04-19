@@ -51,4 +51,17 @@ describe 'the person view', type: :feature do
       expect(page).to have_link('delete', href: phone_number_path(phone))
     end
   end
+
+  it 'deletes a phone number' do
+    phone = person.phone_numbers.first
+    phone_number = phone.number
+
+    first(:link, 'delete').click
+
+    expect(current_path).to eq(person_path(person))
+    expect(page).to_not have_content(phone_number)
+
+  end
+
+
 end
