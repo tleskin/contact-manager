@@ -69,6 +69,10 @@ RSpec.describe EmailAddressesController, type: :controller do
 
   describe "POST #create" do
     context "with valid params" do
+
+      let(:alice) { Person.create(first_name: "Alice", last_name: "Smith") }
+      let(:valid_attributes) { {address: "alice@example.com", person_id: alice.id } }
+
       it "creates a new EmailAddress" do
         expect {
           post :create, {:email_address => valid_attributes}, valid_session
@@ -81,9 +85,9 @@ RSpec.describe EmailAddressesController, type: :controller do
         expect(assigns(:email_address)).to be_persisted
       end
 
-      it "redirects to the created email_address" do
+      it "redirects to the person page of created email_address" do
         post :create, {:email_address => valid_attributes}, valid_session
-        expect(response).to redirect_to(EmailAddress.last)
+        expect(response).to redirect_to(alice)
       end
     end
 
@@ -143,6 +147,9 @@ RSpec.describe EmailAddressesController, type: :controller do
   end
 
   describe "DELETE #destroy" do
+    let(:bob) { Person.create(first_name: 'bob', last_name: 'jones') }
+    let(:valid_attributes) { {address: 'email@newemail.com', person_id: bob.id } }
+
     it "destroys the requested email_address" do
       email_address = EmailAddress.create! valid_attributes
       expect {
@@ -153,7 +160,7 @@ RSpec.describe EmailAddressesController, type: :controller do
     it "redirects to the email_addresses list" do
       email_address = EmailAddress.create! valid_attributes
       delete :destroy, {:id => email_address.to_param}, valid_session
-      expect(response).to redirect_to(email_addresses_url)
+      expect(response).to redirect_to(bob)
     end
   end
 
