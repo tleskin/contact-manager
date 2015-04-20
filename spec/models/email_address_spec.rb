@@ -11,4 +11,9 @@ RSpec.describe EmailAddress, type: :model do
     email_address.address = nil
     expect(email_address).to_not be_valid
   end
+
+  it 'is invalid without a reference to a person' do
+    email_address.person_id = nil
+    expect(email_address).to_not be_valid
+  end
 end
